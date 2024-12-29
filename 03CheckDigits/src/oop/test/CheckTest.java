@@ -20,21 +20,19 @@ class CheckTest
         
         assertTrue(check.transformToUncheckedNumber(28) == (long)2);
         assertTrue(check.transformToUncheckedNumber(340986) == (long)34098);
-        
-        
-       
+        assertTrue(check.transformToUncheckedNumber(7754244807145089024L) == (long)775424480714508902L);
         
 
+        
     }
     
     @Test
     void testExceptions()
     {
         Check check = new Check();
-        
-        assertTrue(check.transformToUncheckedNumber(340987) == (long)34098);
-        assertTrue(check.transformToCheckedNumber(-1) == (long)98300);
-        assertTrue(check.transformToUncheckedNumber(-1) == (long)34098);
-    } 
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> check.transformToUncheckedNumber(10L));
+
+        IllegalArgumentException exception2 = assertThrows(IllegalArgumentException.class, () -> check.transformToUncheckedNumber(4611686018427387903L));
+    }
         
 }

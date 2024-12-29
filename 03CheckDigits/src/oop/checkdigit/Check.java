@@ -2,6 +2,8 @@ package oop.checkdigit;
 
 public class Check
 {
+    private static long biggestNumber = Long.MAX_VALUE/10;  // an diese Nummer muss ich mich jetzt rantasten. Sie muss kleiner als long.MAX_VALUE sein, aber groß genug, um nicht gültige Werte als toBig einzustufen.
+    
     public static long transformToCheckedNumber(long number)
     {
         if (number<0)
@@ -9,12 +11,13 @@ public class Check
             throw new IllegalArgumentException("Number < 0");
         }
         
-//        if (number>Integer.MAX_VALUE)
-//        {
-//            throw new IllegalArgumentException("number to big!");
-//        }
+        // biggestNumber ist hier um ein Zehntel kleiner als die long.MAX_VALUE, damit wir hinten noch eine Dezimalstelle anhängen können, ehe Long.MAX_VALUE überschritten wird.        
+        if (number>=biggestNumber)
+        {
+            throw new IllegalArgumentException("number to big!");
+        }
         
-        String numberAsString = Long.toString(number);
+       
         
         // Quersumme berechnen
        
@@ -40,19 +43,30 @@ public class Check
     
     public static long transformToUncheckedNumber(long number)
     {
+        // gib mit debugg output, aber nur für sehr große Zahlen, wg 5000 Zeichen Grenze im ASB
+        if (number>biggestNumber)
+        {
+            System.out.println("Number: " + number);
+            long puffer = biggestNumber - number;
+            System.out.println("Puffer: " + puffer); // so viel Abstand habe ich bis zur größtmöglichen Zahl
+        }
+            
+        
+        
         if (number<0)
         {
             throw new IllegalArgumentException("Number < 0");
         }
         
-//        if (number>Integer.MAX_VALUE)
-//        {
-//            throw new IllegalArgumentException("number to big!");
-//        }
+        // hier ist noch ein Fehler. Löst in manchen Tests mit großen Zahlen noch keine number to big aus.
+        if (number>=biggestNumber*10)
+        {
+            throw new IllegalArgumentException("number to big!");
+        }
         
         if (quersumme(number)%10 !=0)
         {
-            throw new ArithmeticException("Ausnahme");
+            throw new IllegalArgumentException("Ausnahme");
         }
         
         long result = number/10;
